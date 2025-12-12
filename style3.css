@@ -1,0 +1,568 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a2980, #26d0ce);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1200px;
+    padding: 30px;
+    margin: 20px;
+}
+
+.student-info {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.student-info h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+}
+
+.student-info h1 i {
+    color: #3498db;
+    margin-right: 10px;
+}
+
+.info-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+}
+
+.info-card p {
+    padding: 8px 0;
+    color: #34495e;
+    font-size: 1rem;
+}
+
+.info-card i {
+    color: #3498db;
+    width: 20px;
+    margin-right: 10px;
+}
+
+.priority-info {
+    margin-bottom: 25px;
+}
+
+.priority-card {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    color: #856404;
+    font-size: 0.95rem;
+}
+
+.priority-card i {
+    margin-right: 8px;
+    color: #f39c12;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.expression-row {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 15px;
+    align-items: end;
+}
+
+.operand-block {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.operand-label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-wrapper input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    text-align: center;
+    font-family: 'SF Mono', Monaco, monospace;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.icon-btn.small {
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.icon-btn.small:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.normalized {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    text-align: center;
+    font-family: 'SF Mono', Monaco, monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.normalized-error {
+    font-size: 0.8rem;
+    color: #e74c3c;
+    text-align: center;
+    font-weight: 500;
+}
+
+.operation-block {
+    grid-column: span 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.operation-select {
+    width: 70px;
+    padding: 10px;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    background: white;
+    transition: all 0.3s;
+}
+
+.operation-select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.op-label {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    text-align: center;
+}
+
+.parenthesis-block {
+    grid-column: span 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 60px;
+}
+
+.parenthesis {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #3498db;
+    line-height: 1;
+}
+
+.rounding-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.rounding-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.rounding-section h3 i {
+    color: #9b59b6;
+    margin-right: 10px;
+}
+
+.rounding-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.rounding-option {
+    display: block;
+    cursor: pointer;
+}
+
+.rounding-option input {
+    display: none;
+}
+
+.rounding-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.rounding-option input:checked + .rounding-label {
+    border-color: #9b59b6;
+    background: #f3e6f8;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(155, 89, 182, 0.2);
+}
+
+.rounding-label i {
+    font-size: 2rem;
+    color: #9b59b6;
+    margin-bottom: 10px;
+}
+
+.rounding-text {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.rounding-desc {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+}
+
+.result-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+}
+
+.calculate-btn {
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 18px 30px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.calculate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+}
+
+.calculate-btn i {
+    margin-right: 10px;
+}
+
+.results-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.result-display {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+}
+
+.result-display h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.result-display h3 i {
+    margin-right: 8px;
+}
+
+.result-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-all;
+    font-family: 'SF Mono', Monaco, monospace;
+    text-align: center;
+    line-height: 1.4;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.rounded-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #9b59b6;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-all;
+    font-family: 'SF Mono', Monaco, monospace;
+    text-align: center;
+    line-height: 1.4;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.result-note {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-weight: 600;
+    font-size: 1.1rem;
+    min-height: 25px;
+    padding: 10px;
+    background: #fadbd8;
+    border-radius: 8px;
+    border: 1px solid #f5c6cb;
+}
+
+.examples, .instructions {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.examples h3, .instructions h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.examples h3 i, .instructions h3 i {
+    color: #f39c12;
+    margin-right: 10px;
+}
+
+.example-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.example-buttons button {
+    padding: 12px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.85rem;
+}
+
+.example-buttons button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.instructions ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.instructions li {
+    padding: 8px 0;
+    color: #34495e;
+    border-bottom: 1px dashed #bdc3c7;
+    padding-left: 25px;
+    position: relative;
+}
+
+.instructions li:before {
+    content: "•";
+    color: #3498db;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: 4px;
+}
+
+.instructions li:last-child {
+    border-bottom: none;
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+@media (max-width: 1100px) {
+    .expression-row {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    }
+    
+    .operand-block {
+        grid-column: span 1;
+    }
+    
+    .operation-block {
+        grid-column: span 1;
+    }
+    
+    .parenthesis-block {
+        grid-column: span 1;
+        order: -1;
+    }
+    
+    .parenthesis-block:first-child {
+        order: 3;
+    }
+    
+    .parenthesis-block:last-child {
+        order: 7;
+    }
+    
+    .operand-block:nth-child(1) { order: 1; }
+    .operation-block:nth-child(2) { order: 2; }
+    .operand-block:nth-child(4) { order: 4; }
+    .operation-block:nth-child(5) { order: 5; }
+    .operand-block:nth-child(6) { order: 6; }
+    .operation-block:nth-child(8) { order: 8; }
+    .operand-block:nth-child(9) { order: 9; }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .student-info h1 {
+        font-size: 1.8rem;
+    }
+    
+    .info-card {
+        grid-template-columns: 1fr;
+    }
+    
+    .expression-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .operand-block, .operation-block, .parenthesis-block {
+        grid-column: span 1;
+    }
+    
+    .parenthesis-block {
+        height: 40px;
+        order: 0 !important;
+    }
+    
+    .parenthesis {
+        font-size: 2rem;
+    }
+    
+    .rounding-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .example-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .operation-select {
+        width: 100%;
+    }
+    
+    .input-wrapper input {
+        font-size: 1rem;
+    }
+    
+    .result-value {
+        font-size: 1.5rem;
+    }
+    
+    .rounded-value {
+        font-size: 2rem;
+    }
+}
