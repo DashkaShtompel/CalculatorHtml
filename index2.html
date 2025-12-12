@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Финансовый калькулятор</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="student-info">
+            <h1><i class="fas fa-calculator"></i> Финансовый калькулятор</h1>
+            <div class="info-card">
+                <p><i class="fas fa-user-graduate"></i> <strong>Студент:</strong> Штомпель Дарья Романовна</p>
+                <p><i class="fas fa-book"></i> <strong>Курс:</strong> 4</p>
+                <p><i class="fas fa-users"></i> <strong>Группа:</strong> 4</p>
+                <p><i class="fas fa-calendar"></i> <strong>Год:</strong> 2025</p>
+            </div>
+        </header>
+
+        <main class="calculator">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="num1">Первое число:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="num1" placeholder="Например: 1 234 567.890123">
+                        <button class="icon-btn" onclick="copyToClipboard('num1')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="icon-btn" onclick="pasteFromClipboard('num1')">
+                            <i class="fas fa-paste"></i>
+                        </button>
+                    </div>
+                    <div class="normalized">Нормализовано: <span id="norm1">0</span></div>
+                    <div class="validation" id="valid1"></div>
+                </div>
+
+                <div class="operation-selector">
+                    <button class="op-btn active" data-op="add" id="op-add">
+                        <i class="fas fa-plus"></i> Сложение
+                    </button>
+                    <button class="op-btn" data-op="subtract" id="op-subtract">
+                        <i class="fas fa-minus"></i> Вычитание
+                    </button>
+                    <button class="op-btn" data-op="multiply" id="op-multiply">
+                        <i class="fas fa-times"></i> Умножение
+                    </button>
+                    <button class="op-btn" data-op="divide" id="op-divide">
+                        <i class="fas fa-divide"></i> Деление
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <label for="num2">Второе число:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="num2" placeholder="Например: 987 654.321098">
+                        <button class="icon-btn" onclick="copyToClipboard('num2')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="icon-btn" onclick="pasteFromClipboard('num2')">
+                            <i class="fas fa-paste"></i>
+                        </button>
+                    </div>
+                    <div class="normalized">Нормализовано: <span id="norm2">0</span></div>
+                    <div class="validation" id="valid2"></div>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <button id="calculate-btn" class="calculate-btn">
+                    <i class="fas fa-equals"></i> Вычислить
+                </button>
+                
+                <div class="result-display">
+                    <h3>Результат:</h3>
+                    <div id="result" class="result-value">0</div>
+                    <div id="error" class="error-message"></div>
+                </div>
+            </div>
+
+            <div class="examples">
+                <h3><i class="fas fa-lightbulb"></i> Примеры для тестирования:</h3>
+                <div class="example-buttons">
+                    <button onclick="setExample('1 234 567.890123, 987 654.321098')">С пробелами</button>
+                    <button onclick="setExample('999999999999, 0.000001')">Умножение</button>
+                    <button onclick="setExample('1, 0')">Деление на ноль</button>
+                    <button onclick="setExample('123456.789123, 3')">Деление</button>
+                    <button onclick="setExample('-987 654 321.123456, 123.456789')">Отрицательные</button>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> Инструкция:</h3>
+                <ul>
+                    <li>Вводите числа с точкой или запятой как разделитель</li>
+                    <li>Можно использовать пробелы для разделения разрядов</li>
+                    <li>Диапазон: от -1 000 000 000 000.000000 до +1 000 000 000 000.000000</li>
+                    <li>Деление округляется до 6 знаков после запятой</li>
+                    <li>Используйте Ctrl+C / Ctrl+V для копирования/вставки</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>Финансовый калькулятор с умножением и делением</p>
+        </footer>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const num1Input = document.getElementById('num1');
+    const num2Input = document.getElementById('num2');
+    const norm1Span = document.getElementById('norm1');
+    const norm2Span = document.getElementById('norm2');
+    const valid1Div = document.getElementById('valid1');
+    const valid2Div = document.getElementById('valid2');
+    const resultDiv = document.getElementById('result');
+    const errorDiv = document.getElementById('error');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const opButtons = document.querySelectorAll('.op-btn');
+    
+    let currentOperation = 'add';
+    
+    opButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            opButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentOperation = this.getAttribute('data-op');
+        });
+    });
+    
+    function validateInput(input, validationDiv) {
+        const value = input.value;
+        if (!value) {
+            validationDiv.textContent = '';
+            validationDiv.className = 'validation';
+            return true;
+        }
+        
+        if (/[a-zA-Zа-яА-Я]/.test(value)) {
+            validationDiv.textContent = 'Ошибка: нельзя вводить буквы';
+            validationDiv.className = 'validation invalid';
+            return false;
+        }
+        
+        if (value.includes('  ')) {
+            validationDiv.textContent = 'Ошибка: двойные пробелы';
+            validationDiv.className = 'validation invalid';
+            return false;
+        }
+        
+        if ((value.match(/-/g) || []).length > 1) {
+            validationDiv.textContent = 'Ошибка: несколько минусов';
+            validationDiv.className = 'validation invalid';
+            return false;
+        }
+        
+        if (value.includes('-') && value[0] !== '-') {
+            validationDiv.textContent = 'Ошибка: минус не в начале';
+            validationDiv.className = 'validation invalid';
+            return false;
+        }
+        
+        const temp = value.replace(/,/g, '.');
+        if ((temp.match(/\./g) || []).length > 1) {
+            validationDiv.textContent = 'Ошибка: несколько точек';
+            validationDiv.className = 'validation invalid';
+            return false;
+        }
+        
+        validationDiv.textContent = '✓ Корректный формат';
+        validationDiv.className = 'validation valid';
+        return true;
+    }
+    
+    function updateDisplay() {
+        const val1 = num1Input.value ? num1Input.value.replace(/,/g, '.').replace(/\s/g, '') : '0';
+        const val2 = num2Input.value ? num2Input.value.replace(/,/g, '.').replace(/\s/g, '') : '0';
+        norm1Span.textContent = val1;
+        norm2Span.textContent = val2;
+        
+        validateInput(num1Input, valid1Div);
+        validateInput(num2Input, valid2Div);
+    }
+    
+    num1Input.addEventListener('input', updateDisplay);
+    num2Input.addEventListener('input', updateDisplay);
+    
+    calculateBtn.addEventListener('click', calculate);
+    
+    num1Input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculate();
+    });
+    
+    num2Input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculate();
+    });
+    
+    async function calculate() {
+        if (!validateInput(num1Input, valid1Div) || !validateInput(num2Input, valid2Div)) {
+            errorDiv.textContent = 'Исправьте ошибки ввода';
+            resultDiv.textContent = 'Ошибка';
+            return;
+        }
+        
+        errorDiv.textContent = '';
+        resultDiv.textContent = 'Вычисление...';
+        
+        const data = {
+            num1: num1Input.value,
+            num2: num2Input.value,
+            operation: currentOperation
+        };
+        
+        try {
+            const response = await fetch('/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.error) {
+                errorDiv.textContent = result.error;
+                resultDiv.textContent = 'Ошибка';
+            } else {
+                resultDiv.textContent = result.result;
+                norm1Span.textContent = result.normalized_num1;
+                norm2Span.textContent = result.normalized_num2;
+                valid1Div.textContent = '✓ Корректный формат';
+                valid1Div.className = 'validation valid';
+                valid2Div.textContent = '✓ Корректный формат';
+                valid2Div.className = 'validation valid';
+            }
+        } catch (error) {
+            errorDiv.textContent = 'Ошибка соединения';
+            resultDiv.textContent = 'Ошибка';
+        }
+    }
+    
+    window.copyToClipboard = function(inputId) {
+        const input = document.getElementById(inputId);
+        input.select();
+        input.setSelectionRange(0, 99999);
+        try {
+            navigator.clipboard.writeText(input.value);
+            showToast('Скопировано!');
+        } catch (err) {
+        }
+    };
+    
+    window.pasteFromClipboard = async function(inputId) {
+        const input = document.getElementById(inputId);
+        try {
+            const text = await navigator.clipboard.readText();
+            input.value = text;
+            updateDisplay();
+            showToast('Вставлено!');
+        } catch (err) {
+            input.focus();
+            document.execCommand('paste');
+            setTimeout(updateDisplay, 10);
+        }
+    };
+    
+    window.setExample = function(example) {
+        const [num1, num2] = example.split(', ');
+        num1Input.value = num1;
+        num2Input.value = num2;
+        updateDisplay();
+        showToast('Пример загружен!');
+    };
+    
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #2ecc71; color: white; padding: 12px 20px; border-radius: 8px; z-index: 1000; animation: fadeInOut 3s ease-in-out;';
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'fadeOut 0.5s ease-out forwards';
+            setTimeout(() => document.body.removeChild(toast), 500);
+        }, 2500);
+    }
+    
+    updateDisplay();
+});
+    </script>
+
+    <style>
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(20px); }
+    15% { opacity: 1; transform: translateY(0); }
+    85% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(20px); }
+}
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
+    </style>
+</body>
+</html>

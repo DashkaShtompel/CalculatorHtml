@@ -1,0 +1,361 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a2980, #26d0ce);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1000px;
+    padding: 30px;
+    margin: 20px;
+}
+
+.student-info {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.student-info h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+}
+
+.student-info h1 i {
+    color: #3498db;
+    margin-right: 10px;
+}
+
+.info-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+}
+
+.info-card p {
+    padding: 8px 0;
+    color: #34495e;
+    font-size: 1rem;
+}
+
+.info-card i {
+    color: #3498db;
+    width: 20px;
+    margin-right: 10px;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-wrapper input {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid #bdc3c7;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    font-family: 'SF Mono', Monaco, monospace;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.icon-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1rem;
+}
+
+.icon-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.normalized {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.normalized span {
+    font-weight: 600;
+    color: #2c3e50;
+    font-family: 'SF Mono', Monaco, monospace;
+}
+
+.validation {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: 2px;
+}
+
+.validation.valid {
+    color: #27ae60;
+    background: #d5f4e6;
+}
+
+.validation.invalid {
+    color: #e74c3c;
+    background: #fadbd8;
+}
+
+.operation-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    justify-content: center;
+}
+
+.op-btn {
+    padding: 15px 10px;
+    border: 2px solid #bdc3c7;
+    background: white;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.op-btn.active {
+    background: #2ecc71;
+    color: white;
+    border-color: #27ae60;
+}
+
+.op-btn:not(.active):hover {
+    background: #ecf0f1;
+    border-color: #3498db;
+}
+
+.result-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+}
+
+.calculate-btn {
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 18px 30px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.calculate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+}
+
+.calculate-btn i {
+    margin-right: 10px;
+}
+
+.result-display {
+    margin-top: 20px;
+}
+
+.result-display h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.result-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 3px solid #3498db;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-all;
+    font-family: 'SF Mono', Monaco, monospace;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-weight: 600;
+    margin-top: 15px;
+    font-size: 1.1rem;
+    min-height: 25px;
+}
+
+.examples, .instructions {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.examples h3, .instructions h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.examples h3 i, .instructions h3 i {
+    color: #f39c12;
+    margin-right: 10px;
+}
+
+.example-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.example-buttons button {
+    padding: 12px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.85rem;
+}
+
+.example-buttons button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.instructions ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.instructions li {
+    padding: 8px 0;
+    color: #34495e;
+    border-bottom: 1px dashed #bdc3c7;
+}
+
+.instructions li:last-child {
+    border-bottom: none;
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .student-info h1 {
+        font-size: 1.8rem;
+    }
+    
+    .info-card {
+        grid-template-columns: 1fr;
+    }
+    
+    .operation-selector {
+        grid-template-columns: 1fr;
+    }
+    
+    .example-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .result-value {
+        font-size: 1.8rem;
+        padding: 15px;
+    }
+    
+    .op-btn {
+        padding: 12px 8px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .operation-selector {
+        grid-template-columns: 1fr;
+    }
+    
+    .result-value {
+        font-size: 1.5rem;
+    }
+}
